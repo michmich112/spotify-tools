@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Authentication from "./components/auth/Authentication";
 import SpotifyRedirect from "./components/auth/SpotifyRedirect";
+import Main from "./pages/main/Main";
 
 function Router() {
 
@@ -16,7 +17,7 @@ function Router() {
           <SpotifyRedirect />
         </Route>
         <Route path="/">
-          <div>  Main page </div>
+          <Main />
         </Route>
       </Switch>
     </BrowserRouter>

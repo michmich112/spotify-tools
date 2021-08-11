@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { AuthenticationActions } from "../../app/actions/AuthenticationActions";
+import { AuthenticationActions } from "./actions";
 
 export type AuthenticationState = {
   authed: boolean,

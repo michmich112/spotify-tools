@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import store from "../../app/store";
 import { authenticate } from "./actions";
+import { AuthenticationState } from "./reducer";
 import { getAccessTokenFromCode } from "./utils";
 
 function useQuery(): URLSearchParams {
@@ -14,7 +15,7 @@ function SpotifyRedirect() {
   const query = useQuery() as any;
   const code = query.get('code');
   const [loading, setLoading] = useState(true);
-  const authed = store.getState().authentication.authed
+  const authed = (store.getState().authentication as AuthenticationState).authed
 
   useEffect(() => {
     if (code) {
@@ -31,7 +32,8 @@ function SpotifyRedirect() {
     } else {
       console.error(`Code not in params`);
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // only run once when component is mounted
 
   if (loading) {
     return (
