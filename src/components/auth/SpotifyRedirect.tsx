@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Redirect, useLocation, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { authenticate, isAuthed } from "./authenticationSlice";
+import store from "../../app/store";
+import { authenticate } from "./actions";
+//import { useAppDispatch, useAppSelector } from "../../app/hooks";
+// import { authenticate, isAuthed } from "./authenticationSlice";
 import { getAccessTokenFromCode } from "./utils";
 
 function useQuery(): URLSearchParams {
@@ -9,12 +12,11 @@ function useQuery(): URLSearchParams {
 }
 
 function SpotifyRedirect() {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const query = useQuery() as any;
   const code = query.get('code');
   const [loading, setLoading] = useState(true);
-  const authed = useAppSelector(isAuthed);
-
+  const authed = store.getState().authentication.authed
 
   useEffect(() => {
     if (code) {
@@ -22,7 +24,7 @@ function SpotifyRedirect() {
       setLoading(true);
       getAccessTokenFromCode(code)
         .then(data => {
-          dispatch(authenticate({ authToken: data, refreshToken: '' }));
+          dispatch(authenticate(data.accessToken, data.refreshToken));
           setLoading(false);
         })
         .catch(e => {
@@ -40,6 +42,7 @@ function SpotifyRedirect() {
     );
   } else {
     if (authed) {
+      console.log(`is authed ${authed}`);
       return <Redirect to="/" />
     } else {
       return <Redirect to="/auth" />

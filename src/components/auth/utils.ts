@@ -5,9 +5,9 @@ import axios from 'axios';
 //const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET; // client secret for the spotify app
 //const HOST = process.env.HOST; // current host url
 
-const CLIENT_ID = "";
-const CLIENT_SECRET = "";
-const HOST = "";
+const CLIENT_ID = "d6844e4af75d4d04bf79c16c45c19b1a";
+const CLIENT_SECRET = "5a9c5f969eb84bfaa368d8a77ac7c50b";
+const HOST = "https://f6ae84bf9878.ngrok.io";
 const scopes = [ // scopes for spotify authentication token
   'playlist-modify-public',
   'playlist-modify-private',
@@ -19,12 +19,21 @@ const scopes = [ // scopes for spotify authentication token
  * Authentication persistance mocking
  */
 type authentication = {
-  access_token: undefined,
-  token_type: undefined,
-  created: undefined,
-  expires_in: undefined,
-  refresh_token: undefined,
-  scope: undefined,
+  access_token: string,
+  token_type: string,
+  created?: string,
+  expires_in: number,
+  refresh_token: string,
+  scope: string,
+}
+
+/**
+ * Token information
+ */
+type Tokens = {
+  accessToken: string,
+  refreshToken: string,
+  tokenType: string,
 }
 
 /**
@@ -46,8 +55,7 @@ export function getAuthenticationUrl() {
 /**
  * Get the user's access token from the authentication code
  */
-export async function getAccessTokenFromCode(code: string): Promise<string> {
-  console.error(`calling get Access token from code`);
+export async function getAccessTokenFromCode(code: string): Promise<Tokens> {
   const body = {
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
@@ -65,8 +73,13 @@ export async function getAccessTokenFromCode(code: string): Promise<string> {
         'Content-Type': 'application/x-www-form-urlencoded',
       }
     });
+    const data: authentication = res.data;
     console.debug('data', res.data);
-    return res.data.access_token;
+    return {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      tokenType: data.token_type || 'Bearer',
+    };
   } catch (e) {
     console.error('Could not fetch access token');
     console.error(e);
