@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect, useLocation, useParams } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import store from "../../app/store";
 import { authenticate } from "./actions";
-//import { useAppDispatch, useAppSelector } from "../../app/hooks";
-// import { authenticate, isAuthed } from "./authenticationSlice";
 import { getAccessTokenFromCode } from "./utils";
 
 function useQuery(): URLSearchParams {
@@ -20,7 +18,6 @@ function SpotifyRedirect() {
 
   useEffect(() => {
     if (code) {
-      console.log(`code ${code}`);
       setLoading(true);
       getAccessTokenFromCode(code)
         .then(data => {
