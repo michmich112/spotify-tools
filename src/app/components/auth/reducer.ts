@@ -1,11 +1,6 @@
 import { AnyAction } from "redux";
 import { AuthenticationActions } from "./actions";
-
-export type AuthenticationState = {
-  authed: boolean,
-  accessToken: string,
-  refreshToken: string,
-}
+import { AuthenticationState } from "./types";
 
 const initialState: AuthenticationState = {
   authed: false,

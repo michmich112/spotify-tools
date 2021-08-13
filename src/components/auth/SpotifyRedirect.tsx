@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
+import { authenticate } from "../../app/components/auth/actions";
+import { AuthenticationState } from "../../app/components/auth/types";
 import store from "../../app/store";
-import { authenticate } from "./actions";
-import { AuthenticationState } from "./reducer";
 import { getAccessTokenFromCode } from "./utils";
 
 function useQuery(): URLSearchParams {
