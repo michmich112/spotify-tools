@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import { authenticate } from "../../app/components/auth/actions";
-import { AuthenticationState } from "../../app/components/auth/types";
+import { AuthenticationState, Tokens } from "../../app/components/auth/types";
 import store from "../../app/store";
-import { getAccessTokenFromCode } from "./utils";
+import { getAccessTokenFromCode } from "../../infrastructure/spotify/auth";
 
 function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search);
@@ -21,7 +21,7 @@ function SpotifyRedirect() {
     if (code) {
       setLoading(true);
       getAccessTokenFromCode(code)
-        .then(data => {
+        .then((data: Tokens) => {
           dispatch(authenticate(data.accessToken, data.refreshToken));
           setLoading(false);
         })

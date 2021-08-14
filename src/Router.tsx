@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Authentication from "./components/auth/Authentication";
-import SpotifyRedirect from "./components/auth/SpotifyRedirect";
+import Authentication from "./pages/auth/Authentication";
+import SpotifyRedirect from "./pages/auth/SpotifyRedirect";
 import Main from "./pages/main/Main";
 
 function Router() {

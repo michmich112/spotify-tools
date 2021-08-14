@@ -1,8 +1,8 @@
 import React from 'react';
-import { getAuthenticationUrl } from './utils';
 import { Redirect } from 'react-router-dom';
 import store from '../../app/store';
 import { AuthenticationState } from '../../app/components/auth/types';
+import { getAuthenticationUrl } from '../../infrastructure/spotify/auth';
 
 function Authentication() {
   const authed = (store.getState().authentication as AuthenticationState).authed;
