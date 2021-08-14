@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
-import { authenticate } from "../../app/components/auth/actions";
+import { authenticate, unauthenticate } from "../../app/components/auth/actions";
 import { AuthenticationState, Tokens } from "../../app/components/auth/types";
+import { setUser } from "../../app/components/user/actions";
+import { User } from "../../app/components/user/types";
 import store from "../../app/store";
 import { getAccessTokenFromCode } from "../../infrastructure/spotify/auth";
+import { getUser } from "../../infrastructure/spotify/user";
 
 function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search);
@@ -17,23 +20,35 @@ function SpotifyRedirect() {
   const [loading, setLoading] = useState(true);
   const authed = (store.getState().authentication as AuthenticationState).authed
 
+  const spotifyAuthentication = async () => {
+    let tokens: Tokens;
+    try {
+      tokens = await getAccessTokenFromCode(code)
+    } catch (e) {
+      alert("Could not authenticate with spotify, please try again");
+      console.error("Spotify authentication with code:", e);
+      return;
+    }
+    dispatch(authenticate(tokens));
+    let user: User;
+    try {
+      user = await getUser(tokens.accessToken, tokens.tokenType);
+    } catch (e) {
+      console.error("Could not get user with token");
+      dispatch(unauthenticate());
+      return;
+    }
+    dispatch(setUser(user));
+  }
+
   useEffect(() => {
     if (code) {
       setLoading(true);
-      getAccessTokenFromCode(code)
-        .then((data: Tokens) => {
-          dispatch(authenticate(data.accessToken, data.refreshToken));
-          setLoading(false);
-        })
-        .catch(e => {
-          alert("Could not authenticate with spotify, please try again");
-          console.error("Spotify authentication with code:", e);
-        });
-    } else {
-      console.error(`Code not in params`);
+      spotifyAuthentication().then(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // only run once when component is mounted
+  }, [code]) // only run once when component is mounted
+
 
   if (loading) {
     return (

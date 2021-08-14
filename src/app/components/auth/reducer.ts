@@ -6,6 +6,7 @@ const initialState: AuthenticationState = {
   authed: false,
   accessToken: '',
   refreshToken: '',
+  tokenType: 'Bearer',
 }
 
 function authenticationReducer(
@@ -16,7 +17,8 @@ function authenticationReducer(
       return {
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
-        authed: true
+        tokenType: action.tokenType,
+        authed: true,
       };
     case AuthenticationActions.UnAuthenticate:
       return initialState; // initial state is unauthenticated
