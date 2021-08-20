@@ -1,5 +1,3 @@
-import { User } from "../user/types"
-
 export type AuthenticationState = {
   authed: boolean,
   accessToken: string,

@@ -1,11 +1,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import store from '../../app/store';
-import { AuthenticationState } from '../../app/components/auth/types';
 import { getAuthenticationUrl } from '../../infrastructure/spotify/auth';
+import AppSelectors from '../../app/selectors';
 
 function Authentication() {
-  const authed = (store.getState().authentication as AuthenticationState).authed;
+  const authed = AppSelectors.auth.isAuthed();
 
   const spotifyRedirect = () => {
     const url = getAuthenticationUrl();
@@ -17,7 +16,9 @@ function Authentication() {
     return <Redirect to="/" />
   } else {
     return (
-      <button onClick={spotifyRedirect}>Link Spotify</button>
+      <div>
+        <button onClick={spotifyRedirect}>Link Spotify</button>
+      </div>
     );
   }
 }

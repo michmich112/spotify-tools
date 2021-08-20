@@ -1,13 +1,16 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { AuthenticationState } from '../../app/components/auth/types';
-import store from '../../app/store';
+import AppSelectors from '../../app/selectors';
 
 function Main() {
-  const authed = (store.getState().authentication as AuthenticationState).authed
+  const authed = AppSelectors.auth.isAuthed();
+  const userName = AppSelectors.user.getUserName();
 
   if (authed) {
-    return (<div>Authed with Spotify</div>);
+    return (
+      <div>
+        Welcome {userName};
+      </div>);
   } else {
     return (<Redirect to="/auth" />);
   }

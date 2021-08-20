@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import { authenticate, unauthenticate } from "../../app/components/auth/actions";
-import { AuthenticationState, Tokens } from "../../app/components/auth/types";
+import { Tokens } from "../../app/components/auth/types";
 import { setUser } from "../../app/components/user/actions";
 import { User } from "../../app/components/user/types";
-import store from "../../app/store";
+import AppSelectors from "../../app/selectors";
 import { getAccessTokenFromCode } from "../../infrastructure/spotify/auth";
 import { getUser } from "../../infrastructure/spotify/user";
 
@@ -18,7 +18,7 @@ function SpotifyRedirect() {
   const query = useQuery() as any;
   const code = query.get('code');
   const [loading, setLoading] = useState(true);
-  const authed = (store.getState().authentication as AuthenticationState).authed
+  const authed = AppSelectors.auth.isAuthed();
 
   const spotifyAuthentication = async () => {
     let tokens: Tokens;
