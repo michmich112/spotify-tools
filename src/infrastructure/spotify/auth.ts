@@ -8,7 +8,7 @@ import { Tokens } from '../../app/components/auth/types';
 
 const CLIENT_ID = "d6844e4af75d4d04bf79c16c45c19b1a";
 const CLIENT_SECRET = "5a9c5f969eb84bfaa368d8a77ac7c50b";
-const HOST = "https://f6ae84bf9878.ngrok.io";
+const HOST = "https://bccb-2601-647-5e80-180-a09c-4600-963f-5ac7.ngrok.io";
 const scopes = [ // scopes for spotify authentication token
   'playlist-modify-public',
   'playlist-modify-private',
