@@ -8,7 +8,7 @@ import { Tokens } from '../../app/components/auth/types';
 
 const CLIENT_ID = "d6844e4af75d4d04bf79c16c45c19b1a";
 const CLIENT_SECRET = "5a9c5f969eb84bfaa368d8a77ac7c50b";
-const HOST = "https://spotfiy.boringday.co";
+const HOST = "https://spotify.boringday.co";
 const scopes = [ // scopes for spotify authentication token
   'playlist-modify-public',
   'playlist-modify-private',
